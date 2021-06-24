@@ -47,8 +47,16 @@ module Hyrax
     def included(descendant)
       super
 
-      form_field_definitions.each do |field_name, options|
-        descendant.property field_name.to_sym, options.merge(display: true, default: [])
+      if descendant < Hyrax::Forms::ResourceForm
+        form_field_definitions.each do |field_name, options|
+          descendant.property field_name.to_sym, options.merge(display: true, default: [])
+        end
+      else
+        form_field_definitions.each do |field_name, options|
+          descendant.terms += [field_name.to_sym]
+          descendant.required_terms += [field_name.to_sym] if options[:required]
+          descendant.primary_terms += [field_name.to_sym] if options[:primary]
+        end
       end
     end
   end

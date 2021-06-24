@@ -72,6 +72,10 @@ module Hyrax
       @schema_loader.attributes_for(schema: name)
     end
 
+    def attributes_config
+      @schema_loader.attributes_config_for(schema: name)
+    end
+
     ##
     # @return [String]
     def inspect
@@ -86,7 +90,13 @@ module Hyrax
     # @api private
     def included(descendant)
       super
-      descendant.attributes(attributes)
+      if descendant < Valkyrie::Resource
+        descendant.attributes(attributes)
+      else
+        attributes_config.each do |name, config|
+          descendant.property(name, config.symbolize_keys)
+        end
+      end
     end
   end
 end

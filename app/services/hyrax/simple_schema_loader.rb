@@ -19,6 +19,12 @@ module Hyrax
       end
     end
 
+    def attributes_config_for(schema:)
+      definitions(schema).each_with_object({}) do |definition, hash|
+        hash[definition.name] = definition.config
+      end
+    end
+
     ##
     # @param [Symbol] schema
     #
