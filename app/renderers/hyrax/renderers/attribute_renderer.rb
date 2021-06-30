@@ -31,7 +31,10 @@ module Hyrax
 
         attributes = microdata_object_attributes(field).merge(class: "attribute attribute-#{field}")
 
-        markup += Array(values).map do |value|
+        values_array = Array(values)
+        values_array.sort! if options[:sort]
+
+        markup += values_array.map do |value|
           "<li#{html_attributes(attributes)}>#{attribute_value_to_html(value.to_s)}</li>"
         end.join
 
@@ -48,7 +51,10 @@ module Hyrax
 
         attributes = microdata_object_attributes(field).merge(class: "attribute attribute-#{field}")
 
-        markup += Array(values).map do |value|
+        values_array = Array(values)
+        values_array.sort! if options[:sort]
+
+        markup += values_array.map do |value|
           "<li#{html_attributes(attributes)}>#{attribute_value_to_html(value.to_s)}</li>"
         end.join
         markup += %(</ul></dd>)
